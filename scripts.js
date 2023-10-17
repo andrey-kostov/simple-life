@@ -5,7 +5,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let canvasHeight = $('#canvasWrapper').height();
     let canvasWidth = $('#canvasWrapper').width();
-    let particleSize = 5;
+    let particleSize = 2;
+    let particleCount = 200;
+
+
+    $('.setting').on('change',function(){
+        updateSettings();
+    });
 
     $('#life').attr({width:canvasWidth,height:canvasHeight});
    
@@ -68,26 +74,26 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     //create some particles
-    yellow = create(300, "yellow");
-    green = create(300, "green");
-    red = create(300, "red");
-    blue = create(300, "blue");
+    yellow = create(particleCount, "yellow");
+    green = create(particleCount, "green");
+    red = create(particleCount, "red");
+    blue = create(particleCount, "blue");
 
     //update the canvas
 
     update = () => {
-        rule(yellow, yellow, 0.15);
-        rule(green, green, -0.15);
-        rule(red, red, 0.15);
-        rule(blue, blue, 0.25);
+        rule(yellow, yellow, 2.15);
+        rule(green, green, -2.15);
+        rule(red, red, 2.15);
+        rule(blue, blue, 2.25);
 
-        rule(yellow, green, 0.15);
-        rule(yellow, red, -0.55);
-        rule(yellow, blue, 0.65);
-        rule(green, red, -0.25);
-        rule(green, blue, 0.35);
-        rule(blue, red, -0.35);
-        rule(red, yellow, 0.15);
+        rule(yellow, green, 2.15);
+        rule(yellow, red, -2.55);
+        rule(yellow, blue, 2.65);
+        rule(green, red, -2.25);
+        rule(green, blue, 2.35);
+        rule(blue, red, -2.35);
+        rule(red, yellow, 2.15);
 
         m.clearRect(0, 0, canvasWidth, canvasHeight);
         draw(0, 0, "black", canvasWidth, canvasHeight);
@@ -102,3 +108,7 @@ document.addEventListener("DOMContentLoaded", () => {
     update();
     
 });
+
+function updateSettings(){
+    console.log(123);
+}
