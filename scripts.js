@@ -2,16 +2,67 @@
 document.addEventListener("DOMContentLoaded", () => {
 
     //Variables
+    
+    var canvasHeight = $('#canvasWrapper').height(),
+        canvasWidth = $('#canvasWrapper').width(),
+        particleSize = 3,
+        particleCount = 250,
+        group1Color = 'yellow',
+        group2Color = 'red',
+        group3Color = 'green',
+        group4Color = 'blue',
+        g1g1 = 2,
+        g1g2 = 2,
+        g1g3 = 2,
+        g1g4 = 2,
+        g2g1 = 2,
+        g2g2 = 2,
+        g2g3 = 2,
+        g2g4 = 2,
+        g3g1 = 2,
+        g3g2 = 2,
+        g3g3 = 2,
+        g3g4 = 2,
+        g4g1 = 2,
+        g4g2 = 2,
+        g4g3 = 2,
+        g4g4 = 2;
 
-    let canvasHeight = $('#canvasWrapper').height();
-    let canvasWidth = $('#canvasWrapper').width();
-    let particleSize = 2;
-    let particleCount = 200;
 
 
     $('.setting').on('change',function(){
         updateSettings();
+        if(localStorage.getItem('simpleLifeSettings') !== null){
+            var localStorageSettigns = JSON.parse(localStorage.getItem('simpleLifeSettings'));
+
+            particleSize = localStorageSettigns['particleSize'];
+            particleCount = localStorageSettigns['particleCount'];
+            group1Color = localStorageSettigns['group1Color'];
+            group2Color = localStorageSettigns['group2Color'];
+            group3Color = localStorageSettigns['group3Color'];
+            group4Color = localStorageSettigns['group4Color'];
+            g1g1 = localStorageSettigns['g1g1'];
+            g1g2 = localStorageSettigns['g1g2'];
+            g1g3 = localStorageSettigns['g1g3'];
+            g1g4 = localStorageSettigns['g1g4'];
+            g2g1 = localStorageSettigns['g2g1'];
+            g2g2 = localStorageSettigns['g2g2'];
+            g2g3 = localStorageSettigns['g2g3'];
+            g2g4 = localStorageSettigns['g2g4'];
+            g3g1 = localStorageSettigns['g3g1'];
+            g3g2 = localStorageSettigns['g3g2'];
+            g3g3 = localStorageSettigns['g3g3'];
+            g3g4 = localStorageSettigns['g3g4'];
+            g4g1 = localStorageSettigns['g4g1'];
+            g4g2 = localStorageSettigns['g4g2'];
+            g4g3 = localStorageSettigns['g4g3'];
+            g4g4 = localStorageSettigns['g4g4'];
+        }
+
     });
+
+    
+
 
     $('#life').attr({width:canvasWidth,height:canvasHeight});
    
@@ -74,26 +125,34 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     //create some particles
-    yellow = create(particleCount, "yellow");
-    green = create(particleCount, "green");
-    red = create(particleCount, "red");
-    blue = create(particleCount, "blue");
+    groupParticles1 = create(particleCount, group1Color);
+    groupParticles2 = create(particleCount, group2Color);
+    groupParticles3 = create(particleCount, group3Color);
+    groupParticles4 = create(particleCount, group4Color);
 
     //update the canvas
 
     update = () => {
-        rule(yellow, yellow, 2.15);
-        rule(green, green, -2.15);
-        rule(red, red, 2.15);
-        rule(blue, blue, 2.25);
 
-        rule(yellow, green, 2.15);
-        rule(yellow, red, -2.55);
-        rule(yellow, blue, 2.65);
-        rule(green, red, -2.25);
-        rule(green, blue, 2.35);
-        rule(blue, red, -2.35);
-        rule(red, yellow, 2.15);
+        rule(groupParticles1, groupParticles1, g1g1);
+        rule(groupParticles1, groupParticles2, g1g2);
+        rule(groupParticles1, groupParticles3, g1g3);
+        rule(groupParticles1, groupParticles4, g1g4);
+
+        rule(groupParticles2, groupParticles1, g2g1);
+        rule(groupParticles2, groupParticles2, g2g2);
+        rule(groupParticles2, groupParticles3, g2g3);
+        rule(groupParticles2, groupParticles4, g2g4);
+
+        rule(groupParticles3, groupParticles1, g3g1);
+        rule(groupParticles3, groupParticles2, g3g2);
+        rule(groupParticles3, groupParticles3, g3g3);
+        rule(groupParticles3, groupParticles4, g3g4);
+
+        rule(groupParticles4, groupParticles1, g4g1);
+        rule(groupParticles4, groupParticles2, g4g2);
+        rule(groupParticles4, groupParticles3, g4g3);
+        rule(groupParticles4, groupParticles4, g4g4);
 
         m.clearRect(0, 0, canvasWidth, canvasHeight);
         draw(0, 0, "black", canvasWidth, canvasHeight);
@@ -110,5 +169,13 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function updateSettings(){
-    console.log(123);
+    var settings = {};
+
+    $( ".setting" ).each(function() {
+        let value = $(this).val();
+        let name = $(this).attr('name');
+        settings[name]=value;
+    });
+
+    localStorage.setItem('simpleLifeSettings', JSON.stringify(settings));
 }
